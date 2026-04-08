@@ -25,11 +25,7 @@
       --rust: #008F11;
       --gold: #00FF41;
       --sand: #00CC33;
-      --cream: #0D0D0D;
-      --ivory: #0A0A0A;
-      --navy: #000000;
       --ink: #00FF41;
-      --muted: #008F11;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -48,12 +44,10 @@
       inset: 0;
       background: url('bg.jpg') center center / cover;
       z-index: -1;
-      pointer-events: none;
       filter: grayscale(100%) sepia(100%) hue-rotate(90deg) saturate(2);
       opacity: 0.35;
     }
 
-    /* NAV */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; justify-content: space-between; align-items: center;
@@ -62,121 +56,45 @@
       backdrop-filter: blur(8px);
       border-bottom: 1px solid rgba(0,255,65,0.2);
     }
-    .nav-brand {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.35rem; font-weight: 600;
-      color: #00FF41; letter-spacing: 0.04em;
-      animation: matrixGlow 3s ease-in-out infinite;
-    }
+    .nav-brand { font-family: 'Cormorant Garamond', serif; font-size: 1.35rem; font-weight: 600; color: #00FF41; animation: matrixGlow 3s infinite; }
     .nav-links { display: flex; gap: 2rem; list-style: none; }
-    .nav-links a {
-      font-size: 0.78rem; font-weight: 500; letter-spacing: 0.12em;
-      text-transform: uppercase; color: #888888;
-      text-decoration: none; transition: color 0.2s;
-    }
+    .nav-links a { font-size: 0.78rem; text-transform: uppercase; color: #888; text-decoration: none; }
     .nav-links a:hover { color: #00FF41; }
 
-    /* HERO */
-    .hero {
-      min-height: 100vh;
-      display: grid; grid-template-columns: 1fr 1fr;
-      position: relative; overflow: visible;
-    }
-    .hero-rug {
-      position: relative;
-      background: #000000;
-      overflow: hidden;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .hero-content {
-      background: transparent;
-      display: flex; flex-direction: column; justify-content: center;
-      padding: 6rem 4rem 4rem 4rem;
-      position: relative;
-    }
-    .hero-content::before {
-      content: '';
-      position: absolute; left: 0; top: 10%; bottom: 10%;
-      width: 3px;
-      background: linear-gradient(to bottom, transparent, #00FF41, #008F11, #00FF41, transparent);
-    }
-    .hero-eyebrow {
-      font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
-      color: #888888; margin-bottom: 1.2rem;
-    }
-    .hero-name { 
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2.8rem, 4vw, 4.2rem);
-      font-weight: 300; line-height: 1.1;
-      color: var(--ink);
-      text-shadow: 0 0 30px rgba(0,255,65,0.6), 0 2px 8px rgba(0,0,0,1);
-      animation: matrixGlow 3s ease-in-out infinite;
-    }
-    .hero-name em { font-style: italic; color: var(--crimson); }
-    .hero-tagline {
-      margin-top: 1.4rem; font-size: 1rem; font-weight: 300; line-height: 1.7;
-      color: #BBBBBB; max-width: 420px;
-    }
-    .hero-pills { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 2rem; }
-    .pill {
-      padding: 0.35rem 1rem; border-radius: 999px;
-      font-size: 0.72rem; letter-spacing: 0.08em; font-weight: 500;
-      border: 1px solid rgba(0,255,65,0.3); color: #008F11;
-      background: rgba(0,255,65,0.05);
-    }
-    .hero-cta { display: flex; gap: 1rem; margin-top: 2.5rem; }
-    .btn-primary {
-      padding: 0.75rem 2rem; background: #00FF41; color: #000000;
-      font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase;
-      border: none; cursor: pointer; text-decoration: none; display: inline-block;
-    }
-    .btn-ghost {
-      padding: 0.75rem 2rem; background: transparent;
-      border: 1px solid rgba(0,255,65,0.4); color: #008F11;
-      font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase;
-      cursor: pointer; text-decoration: none; display: inline-block;
-    }
-    .hero-socials { display: flex; gap: 1.4rem; margin-top: 3rem; }
-    .hero-socials a {
-      font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
-      color: #00FF41; text-decoration: none; border-bottom: 1px solid rgba(0,255,65,0.5);
-    }
+    .hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; }
+    .hero-rug { position: relative; background: #000; display: flex; align-items: center; justify-content: center; }
+    .hero-content { padding: 6rem 4rem; display: flex; flex-direction: column; justify-content: center; position: relative; }
+    .hero-content::before { content: ''; position: absolute; left: 0; top: 10%; bottom: 10%; width: 3px; background: linear-gradient(to bottom, transparent, #00FF41, transparent); }
+    
+    .hero-name { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.8rem, 4vw, 4.2rem); font-weight: 300; color: var(--ink); line-height: 1.1; }
+    .hero-tagline { margin-top: 1.4rem; color: #BBBBBB; max-width: 420px; line-height: 1.7; }
 
-    /* SECTIONS */
     section { padding: 6rem 0; }
     .container { max-width: 1100px; margin: 0 auto; padding: 0 3rem; }
-    .section-label { font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase; color: #888888; }
-    .section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 3vw, 2.8rem); font-weight: 300; color: var(--ink); }
-    .divider { width: 60px; height: 2px; margin: 1.2rem 0 3rem; background: linear-gradient(to right, #00FF41, #003B00); }
+    .section-title { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; color: var(--ink); margin-bottom: 2rem; }
+    .divider { width: 60px; height: 2px; background: #00FF41; margin-bottom: 3rem; }
 
-    /* ABOUT GRID */
-    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
-    .about-text p { font-size: 1rem; line-height: 1.85; color: #CCCCCC; margin-bottom: 1.2rem; font-weight: 300; }
-    .about-text strong { color: var(--ink); font-weight: 500; }
-    .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-    .stat-box { 
-      padding: 1.5rem; border: 1px solid rgba(0,255,65,0.2); background: rgba(0,0,0,0.25); 
-      position: relative; overflow: hidden;
-    }
-    .stat-box::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: #00FF41; }
-    .stat-num { font-family: 'Cormorant Garamond', serif; font-size: 2.4rem; font-weight: 300; color: var(--crimson); }
-    .stat-desc { font-size: 0.8rem; color: #AAAAAA; margin-top: 0.3rem; line-height: 1.4; }
+    .about-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 4rem; }
+    .stat-box { padding: 1.5rem; border: 1px solid rgba(0,255,65,0.2); margin-bottom: 1rem; position: relative; }
+    .stat-box::before { content: ''; position: absolute; left: 0; top: 0; height: 100%; width: 3px; background: #00FF41; }
 
-    /* PROJECTS */
+    .exp-item { margin-bottom: 4rem; padding-left: 2rem; border-left: 1px solid #003B00; position: relative; }
+    .exp-item::after { content: ''; position: absolute; left: -5px; top: 0; width: 10px; height: 10px; background: #00FF41; border-radius: 50%; }
+    .exp-role { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; color: #00FF41; }
+    .exp-org { color: #888; font-size: 0.9rem; margin-bottom: 1rem; }
+    .exp-bullets { list-style: none; color: #AAA; font-size: 0.95rem; line-height: 1.6; }
+    .exp-bullets li { margin-bottom: 0.8rem; position: relative; padding-left: 1.5rem; }
+    .exp-bullets li::before { content: '◆'; position: absolute; left: 0; color: #008F11; font-size: 0.7rem; top: 4px; }
+
     .projects-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
-    .project-card { border: 1px solid rgba(0,255,65,0.15); padding: 2rem; transition: transform 0.25s; }
-    .project-card:hover { transform: translateY(-3px); box-shadow: 0 16px 40px rgba(0,0,0,0.5); }
+    .project-card { border: 1px solid rgba(0,255,65,0.15); padding: 2rem; transition: 0.3s; }
+    .project-card:hover { border-color: #00FF41; background: rgba(0,255,65,0.02); }
 
-    /* ANIMATIONS */
-    @keyframes matrixGlow {
-      0%, 100% { text-shadow: 0 0 8px rgba(0,255,65,0.8); }
-      50% { text-shadow: 0 0 20px rgba(0,255,65,1); }
-    }
-
+    @keyframes matrixGlow { 0%, 100% { text-shadow: 0 0 8px rgba(0,255,65,0.6); } 50% { text-shadow: 0 0 15px rgba(0,255,65,1); } }
+    
     @media (max-width: 900px) {
-      .hero { grid-template-columns: 1fr; }
-      .hero-rug { min-height: 40vh; }
-      .about-grid, .projects-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .hero, .about-grid, .projects-grid { grid-template-columns: 1fr; }
+      .hero-rug { min-height: 300px; }
     }
   </style>
 </head>
@@ -188,7 +106,6 @@
     <li><a href="#about">About</a></li>
     <li><a href="#experience">Experience</a></li>
     <li><a href="#projects">Projects</a></li>
-    <li><a href="#contact">Contact</a></li>
   </ul>
 </nav>
 
@@ -197,94 +114,103 @@
     <img src="rug.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" alt="Heritage background">
   </div>
   <div class="hero-content">
-    <p class="hero-eyebrow">Data Analyst · AI Researcher · CS Grad</p>
+    <p style="font-size: 0.7rem; letter-spacing: 0.2em; color: #888; text-transform: uppercase; margin-bottom: 1rem;">Data Analyst · AI Researcher · CS Grad</p>
     <h1 class="hero-name">Khansa Khanam<br><em>Umar Sultan</em></h1>
     <p class="hero-tagline">
       I sit at the intersection of rigorous research and practical data science, building AI pipelines, surfacing insights from messy real-world datasets, and communicating findings that drive decisions.
     </p>
-    <div class="hero-pills">
-      <span class="pill">Machine Learning</span>
-      <span class="pill">NLP & BERTopic</span>
-      <span class="pill">SQL · Python · R</span>
-      <span class="pill">Bayesian Optimization</span>
-    </div>
-    <div class="hero-cta">
-      <a href="#projects" class="btn-primary">View Projects</a>
-      <a href="CV_KhansaKhanam.pdf" class="btn-ghost" download>Download CV</a>
-    </div>
-    <div class="hero-socials">
-      <a href="https://linkedin.com/in/khansakhanam" target="_blank">LinkedIn</a>
-      <a href="https://github.com/KhansaKhanam" target="_blank">GitHub</a>
-      <a href="https://medium.com/@khnsakhnm" target="_blank">Medium</a>
+    <div style="margin-top: 2.5rem;">
+      <a href="#projects" style="padding: 0.8rem 2rem; background: #00FF41; color: #000; text-decoration: none; text-transform: uppercase; font-size: 0.75rem; font-weight: 600;">View Projects</a>
     </div>
   </div>
 </section>
 
 <section id="about">
   <div class="container">
-    <p class="section-label">About</p>
     <h2 class="section-title">Where <em>data meets</em> research</h2>
     <div class="divider"></div>
     <div class="about-grid">
       <div class="about-text">
-        <p>
+        <p style="color: #CCC; line-height: 1.8; margin-bottom: 1.5rem;">
           I’m a <strong>CS grad with a background in IT</strong> and 2+ years working as a Business Intelligence Analyst. Right now, I’m an Applied AI Researcher working across three UB labs: misinformation, cancer biophysics, and AI & Society.
         </p>
-        <p>
+        <p style="color: #CCC; line-height: 1.8; margin-bottom: 1.5rem;">
           I work across the whole data pipeline, from digging through messy Reddit data and tuning cancer simulations to building dashboards that actually help decision-makers make moves. I’m big on research that doesn’t just sit in a paper—it should be useful.
         </p>
-        <p>
-          Outside of work, I write on <strong>Medium</strong> about AI, society, and how we study things. When I’m offline, I’m usually hiking, hanging out in nature, or getting lost in a good book, sometimes all at once.
-        </p>
-        <p style="font-size: 0.9rem; color: #888; font-style: italic; border-left: 2px solid #00FF41; padding-left: 1rem; margin-top: 2rem;">
+        <p style="color: #888; font-style: italic; border-left: 2px solid #00FF41; padding-left: 1.5rem;">
           P.S. I’m a sucker for the sound of rain + a crackling fire in the background while reading, and one day I’d love to get into horseback riding.
         </p>
       </div>
-      
       <div class="about-stats">
         <div class="stat-box">
-          <div class="stat-num">20K+</div>
-          <div class="stat-desc">Reddit posts analyzed for AI mental health research</div>
+          <p style="font-size: 2rem; color: #00FF41;">20K+</p>
+          <p style="font-size: 0.75rem; color: #888;">Reddit posts analyzed for AI mental health research</p>
         </div>
         <div class="stat-box">
-          <div class="stat-num">35%</div>
-          <div class="stat-desc">Reduction in biologically invalid proposals via Bayesian Optimization</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-num">0.74</div>
-          <div class="stat-desc">C-index achieved in physiological age prediction (n=22,307)</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-num">$1.2M</div>
-          <div class="stat-desc">Seed A raise supported through BI analysis & market strategy</div>
+          <p style="font-size: 2rem; color: #00FF41;">$1.2M</p>
+          <p style="font-size: 0.75rem; color: #888;">Seed A raise supported through BI analysis</p>
         </div>
       </div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="container">
+    <h2 class="section-title">Professional <em>Path</em></h2>
+    <div class="divider"></div>
+    
+    <div class="exp-item">
+      <div class="exp-role">Applied AI Researcher — Data Analyst</div>
+      <div class="exp-org">UB Media Effects, Misinformation & Extremism Lab | Sep 2025 – Present</div>
+      <ul class="exp-bullets">
+        <li>Led data cleaning and analysis of 20,000+ Reddit posts to surface trust signals around AI mental health tools.</li>
+        <li>Engineered a deep learning classification system using fine-tuned RoBERTa achieving 67% accuracy.</li>
+        <li>Applied BERTopic NLP to surface dominant public narratives on AI safety and bias.</li>
+      </ul>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-role">Applied AI Researcher — Data Analyst</div>
+      <div class="exp-org">UB Systems Biomedicine & Pharmaceutics Lab | Sep 2025 – Present</div>
+      <ul class="exp-bullets">
+        <li>Built a WRMSE calibration pipeline fitting CompuCell3D cancer migration simulations to experimental data.</li>
+        <li>Optimized biological ML models using Bayesian Optimization, reducing invalid proposals by 35%.</li>
+      </ul>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-role">Business Intelligence Analyst</div>
+      <div class="exp-org">SafetyConnect – IOTRL | Aug 2021 – Dec 2023</div>
+      <ul class="exp-bullets">
+        <li>Benchmarked 12+ competitors and developed demand forecasting dashboards supporting a $1.2M–$2M Seed A raise.</li>
+        <li>Accelerated launch readiness by 30% through feature gap analysis presented to C-suite stakeholders.</li>
+      </ul>
     </div>
   </div>
 </section>
 
 <section id="projects">
   <div class="container">
-    <p class="section-label">Work</p>
-    <h2 class="section-title">Selected <em>Projects</em></h2>
+    <h2 class="section-title">Selected <em>Work</em></h2>
     <div class="divider"></div>
     <div class="projects-grid">
       <div class="project-card">
-        <h3 style="color: #00FF41;">AI4MH: Perception Analysis</h3>
-        <p style="color: #aaa; font-size: 0.9rem; margin: 10px 0;">Fine-tuned RoBERTa on labeled mental health discourse from Reddit.</p>
-        <a href="https://github.com/KhansaKhanam/AI4MentalHealth" target="_blank" style="color: #00FF41; text-decoration: none; font-size: 0.8rem;">GITHUB →</a>
+        <h3 style="color: #00FF41; margin-bottom: 1rem;">AI4MH: AI Perception</h3>
+        <p style="color: #AAA; font-size: 0.9rem; margin-bottom: 1.5rem;">Fine-tuned RoBERTa on 800 labeled posts achieving 87% accuracy; scaled to 20,000+ posts for AI governance research.</p>
+        <a href="https://github.com/KhansaKhanam/AI4MentalHealth" style="color: #00FF41; text-decoration: none; font-size: 0.8rem; border-bottom: 1px solid;">GITHUB →</a>
       </div>
       <div class="project-card">
-        <h3 style="color: #00FF41;">Cancer Migration Calibration</h3>
-        <p style="color: #aaa; font-size: 0.9rem; margin: 10px 0;">Optimizing biological ML models using Bayesian Optimization with Gaussian Processes.</p>
-        <a href="#" style="color: #00FF41; text-decoration: none; font-size: 0.8rem;">PRE-PRINT →</a>
+        <h3 style="color: #00FF41; margin-bottom: 1rem;">Physiological Age Analysis</h3>
+        <p style="color: #AAA; font-size: 0.9rem; margin-bottom: 1.5rem;">Built XGBoost models on NHANES dataset (n=22,307) achieving C-index of 0.74 linking aging to enzyme activity.</p>
+        <a href="#" style="color: #00FF41; text-decoration: none; font-size: 0.8rem; border-bottom: 1px solid;">CASE STUDY →</a>
       </div>
     </div>
   </div>
 </section>
 
-<footer style="text-align: center; padding: 4rem 0; border-top: 1px solid #111;">
-  <p style="font-size: 0.75rem; color: #444; letter-spacing: 0.08em;">&copy; 2026 <span style="color: #00FF41;">Khansa Khanam Umar Sultan</span>. All rights reserved.</p>
+<footer style="text-align: center; padding: 4rem; border-top: 1px solid #111;">
+  <p style="font-size: 0.7rem; color: #444; letter-spacing: 0.1em;">&copy; 2026 KHANSA KHANAM UMAR SULTAN</p>
 </footer>
 
 </body>
