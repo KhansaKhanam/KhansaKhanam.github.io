@@ -4,472 +4,1578 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Khansa Khanam Umar Sultan | Data Analyst · AI Researcher</title>
-  <meta name="description" content="Interactive portfolio with cinematic storytelling, smooth motion, and a narrative experience." />
+  <meta name="description" content="Interactive portfolio with cinematic storytelling, layered motion, and a visual research-driven experience." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&amp;family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #050505;
-      --bg-soft: rgba(255,255,255,0.04);
-      --text: #f3f3ef;
-      --muted: #a7a7a0;
-      --line: rgba(255,255,255,0.12);
-      --accent: #00FF41;
-      --accent-mid: #008F11;
-      --card: rgba(255,255,255,0.06);
-      --shadow: 0 20px 60px rgba(0,0,0,0.45);
+      --bg: #040705;
+      --bg-soft: #0d1510;
+      --surface: rgba(10, 17, 12, 0.78);
+      --surface-strong: rgba(14, 24, 17, 0.92);
+      --text: #f4f4ef;
+      --muted: #9ca59a;
+      --line: rgba(210, 255, 226, 0.12);
+      --accent: #95ff6b;
+      --accent-strong: #26cf67;
+      --accent-soft: rgba(149, 255, 107, 0.16);
+      --gold: #ecd8a0;
+      --shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+      --max-width: 1180px;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: auto; }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       font-family: 'Inter', sans-serif;
-      background: radial-gradient(circle at top, rgba(0,255,65,0.08), transparent 28%), var(--bg);
+      min-height: 100vh;
       color: var(--text);
       overflow-x: hidden;
-      min-height: 100vh;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(149, 255, 107, 0.12), transparent 24%),
+        radial-gradient(circle at 80% 12%, rgba(38, 207, 103, 0.1), transparent 18%),
+        linear-gradient(180deg, #08110b 0%, #050705 40%, #040504 100%);
     }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      inset: auto;
+      width: 38vw;
+      height: 38vw;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: -4;
+      filter: blur(70px);
+      opacity: 0.4;
+    }
+
+    body::before {
+      top: -12vw;
+      right: -8vw;
+      background: rgba(149, 255, 107, 0.12);
+    }
+
+    body::after {
+      bottom: -14vw;
+      left: -10vw;
+      background: rgba(236, 216, 160, 0.07);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    #bg-canvas,
+    .grid-overlay,
+    .grain,
+    .cursor-glow {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+    }
+
     #bg-canvas {
-      position: fixed;
-      inset: 0;
-      z-index: -3;
-      pointer-events: none;
+      z-index: -5;
     }
+
+    .grid-overlay {
+      z-index: -4;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+      background-size: 72px 72px;
+      mask-image: radial-gradient(circle at center, black 45%, transparent 90%);
+      opacity: 0.2;
+    }
+
     .grain {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: -2;
-      opacity: 0.06;
-      background-image: radial-gradient(circle, rgba(255,255,255,0.35) 1px, transparent 1px);
+      z-index: -3;
+      opacity: 0.08;
+      background-image: radial-gradient(circle, rgba(255, 255, 255, 0.3) 1px, transparent 1px);
       background-size: 3px 3px;
       mix-blend-mode: screen;
     }
-    a { color: inherit; }
+
+    .cursor-glow {
+      z-index: -2;
+      opacity: 0.5;
+      background:
+        radial-gradient(circle at var(--cursor-x, 50%) var(--cursor-y, 50%), rgba(149, 255, 107, 0.12), transparent 18%);
+      transition: opacity 0.3s ease;
+    }
+
     .nav {
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
-      z-index: 20;
+      z-index: 30;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 1rem;
       padding: 1rem 1.5rem;
-      backdrop-filter: blur(14px);
-      background: rgba(5,5,5,0.52);
-      border-bottom: 1px solid var(--line);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(16px);
+      background: rgba(5, 8, 6, 0.62);
     }
-    .brand { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 600; letter-spacing: 0.08em; color: var(--accent); }
-    .nav-links { display: flex; gap: 1rem; list-style: none; flex-wrap: wrap; }
-    .nav-links a {
-      text-decoration: none;
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+    }
+
+    .brand strong {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .brand span {
+      font-size: 0.7rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
       color: var(--muted);
-      font-size: 0.75rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1rem;
+      list-style: none;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav-links a {
+      position: relative;
+      font-size: 0.76rem;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      transition: color .2s ease, transform .2s ease;
+      color: var(--muted);
+      transition: color 0.25s ease;
     }
-    .nav-links a:hover { color: var(--accent); transform: translateY(-1px); }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -0.35rem;
+      width: 100%;
+      height: 1px;
+      transform: scaleX(0);
+      transform-origin: left;
+      background: var(--accent);
+      transition: transform 0.25s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a:focus-visible {
+      color: var(--text);
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a:focus-visible::after {
+      transform: scaleX(1);
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+    }
+
+    .container {
+      width: min(var(--max-width), calc(100% - 3rem));
+      margin: 0 auto;
+    }
+
     .scene {
+      position: relative;
       min-height: 100vh;
       display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
       align-items: center;
-      gap: 2rem;
-      padding: 6rem 1.5rem 4rem;
+      padding: 8.5rem 0 4rem;
     }
-    .hero-copy { max-width: 720px; }
+
+    .scene-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+      align-items: center;
+      gap: 2.5rem;
+    }
+
+    .hero-copy {
+      max-width: 700px;
+    }
+
     .eyebrow {
-      font-size: 0.72rem;
-      letter-spacing: 0.22em;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-size: 0.76rem;
+      letter-spacing: 0.24em;
       text-transform: uppercase;
       color: var(--muted);
       margin-bottom: 1rem;
     }
+
+    .eyebrow::before {
+      content: "";
+      width: 48px;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(149, 255, 107, 0), rgba(149, 255, 107, 0.9));
+    }
+
     .hero-title {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(3rem, 7vw, 6rem);
-      line-height: 0.95;
+      font-size: clamp(3.6rem, 8vw, 7rem);
+      line-height: 0.9;
       letter-spacing: -0.05em;
       max-width: 9ch;
+      text-wrap: balance;
     }
-    .hero-title span { color: var(--accent); }
+
+    .hero-title span {
+      color: var(--gold);
+    }
+
     .hero-text {
-      margin-top: 1.25rem;
-      color: #d4d4ce;
-      font-size: 1.05rem;
-      line-height: 1.8;
+      margin-top: 1.35rem;
       max-width: 58ch;
+      color: #d2d8d1;
+      line-height: 1.85;
+      font-size: 1.05rem;
     }
-    .hero-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1.75rem; }
+
+    .hero-actions {
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+      margin-top: 1.9rem;
+    }
+
     .button {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 0.9rem 1.25rem;
+      min-width: 164px;
+      padding: 0.95rem 1.3rem;
       border-radius: 999px;
       border: 1px solid var(--line);
-      text-decoration: none;
-      font-size: 0.78rem;
-      letter-spacing: 0.12em;
+      background: rgba(255, 255, 255, 0.02);
+      font-size: 0.77rem;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
-      transition: transform .2s ease, background .2s ease, border-color .2s ease;
+      transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
     }
-    .button:hover { transform: translateY(-2px); border-color: rgba(0,255,65,0.5); }
-    .button.primary { background: var(--accent); color: #111; border-color: transparent; }
-    .button.primary:hover { background: #00cc33; }
-    .playground {
-      justify-self: end;
-      width: min(100%, 520px);
-      aspect-ratio: 1 / 1.05;
-      border: 1px solid var(--line);
-      border-radius: 28px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
-      box-shadow: var(--shadow);
-      position: relative;
-      overflow: hidden;
-      padding: 1rem;
+
+    .button:hover,
+    .button:focus-visible {
+      transform: translateY(-3px);
+      border-color: rgba(149, 255, 107, 0.55);
+      box-shadow: 0 18px 34px rgba(0, 0, 0, 0.24);
     }
-    .character {
-      position: absolute;
-      inset: 12% 12% 18%;
-      border-radius: 999px 999px 40px 40px;
-      background: linear-gradient(180deg, rgba(0,255,65,0.35), rgba(0,255,65,0.08));
-      border: 1px solid rgba(0,255,65,0.25);
-      transform: rotate(-6deg);
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
+
+    .button.primary {
+      background: linear-gradient(135deg, var(--accent), #d9ff7c);
+      color: #0b120c;
+      border-color: transparent;
+      font-weight: 700;
     }
-    .orbit { position: absolute; inset: 0; border-radius: 50%; border: 1px dashed rgba(255,255,255,0.12); animation: spin 18s linear infinite; }
-    .orbit.two { inset: 10%; animation-direction: reverse; }
-    .blob {
-      position: absolute;
-      width: 110px;
-      height: 110px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 35% 35%, rgba(0,255,65,0.95), rgba(0,255,65,0.18));
-      filter: blur(0.5px);
-      box-shadow: 0 0 40px rgba(0,255,65,0.25);
+
+    .hero-strip {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.85rem;
+      margin-top: 2rem;
     }
-    .blob.one { top: 12%; left: 18%; }
-    .blob.two { bottom: 18%; right: 14%; width: 84px; height: 84px; }
-    .caption-card {
-      position: absolute;
-      left: 1rem;
-      right: 1rem;
-      bottom: 1rem;
+
+    .stat-chip {
       padding: 1rem 1.1rem;
       border-radius: 18px;
-      background: rgba(0,0,0,0.45);
-      border: 1px solid rgba(255,255,255,0.08);
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
+      transform: translateY(0);
+      transition: transform 0.25s ease, border-color 0.25s ease;
+    }
+
+    .stat-chip:hover {
+      transform: translateY(-4px);
+      border-color: rgba(149, 255, 107, 0.45);
+    }
+
+    .stat-chip strong {
+      display: block;
+      font-size: 1.45rem;
+      margin-bottom: 0.28rem;
+      color: var(--text);
+    }
+
+    .stat-chip span {
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .hero-visual {
+      position: relative;
+      min-height: 640px;
+      display: grid;
+      place-items: center;
+    }
+
+    .visual-shell {
+      position: relative;
+      width: min(100%, 540px);
+      aspect-ratio: 0.93;
+      border-radius: 34px;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04)),
+        linear-gradient(135deg, rgba(149, 255, 107, 0.08), rgba(236, 216, 160, 0.04));
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: var(--shadow);
+      transform-style: preserve-3d;
+      isolation: isolate;
+    }
+
+    .visual-shell::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 25% 20%, rgba(149, 255, 107, 0.22), transparent 24%),
+        linear-gradient(180deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.28));
+      z-index: 0;
+    }
+
+    .visual-shell::after {
+      content: "";
+      position: absolute;
+      inset: 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 28px;
+      z-index: 0;
+    }
+
+    .visual-backdrop,
+    .visual-grid,
+    .orbit-ring,
+    .floating-badge,
+    .quote-card,
+    .pulse-node,
+    .mini-panel {
+      position: absolute;
+    }
+
+    .visual-backdrop {
+      inset: 0;
+      background:
+        linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+      background-size: 56px 56px;
+      opacity: 0.18;
+      z-index: 0;
+    }
+
+    .visual-grid {
+      inset: 0;
+      z-index: 0;
+      background: radial-gradient(circle at center, transparent 34%, rgba(0, 0, 0, 0.25) 100%);
+    }
+
+    .portrait-frame {
+      position: absolute;
+      inset: 12% 14% 16%;
+      border-radius: 28px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+      z-index: 1;
+      transform: translateZ(40px);
+    }
+
+    .portrait-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      transform: scale(1.08);
+      filter: saturate(0.92) contrast(1.02) brightness(0.82);
+    }
+
+    .portrait-frame::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(7, 10, 8, 0.12), rgba(7, 10, 8, 0.58)),
+        radial-gradient(circle at 50% 30%, transparent 20%, rgba(0, 0, 0, 0.25) 100%);
+    }
+
+    .orbit-ring {
+      border-radius: 50%;
+      border: 1px dashed rgba(149, 255, 107, 0.25);
+      z-index: 2;
+      animation: spin 20s linear infinite;
+    }
+
+    .orbit-ring.one {
+      inset: 8%;
+    }
+
+    .orbit-ring.two {
+      inset: 18%;
+      animation-duration: 26s;
+      animation-direction: reverse;
+      border-color: rgba(236, 216, 160, 0.18);
+    }
+
+    .pulse-node {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #efffcb, var(--accent));
+      box-shadow: 0 0 0 10px rgba(149, 255, 107, 0.12);
+      z-index: 3;
+      animation: pulse 3.4s ease-in-out infinite;
+    }
+
+    .pulse-node.one {
+      top: 18%;
+      left: 16%;
+    }
+
+    .pulse-node.two {
+      right: 17%;
+      bottom: 22%;
+      animation-delay: 1s;
+    }
+
+    .pulse-node.three {
+      left: 50%;
+      bottom: 15%;
+      width: 14px;
+      height: 14px;
+      animation-delay: 1.8s;
+    }
+
+    .floating-badge {
+      display: grid;
+      gap: 0.25rem;
+      min-width: 164px;
+      padding: 0.9rem 1rem;
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(7, 11, 8, 0.72);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.32);
+      z-index: 4;
+    }
+
+    .floating-badge small {
+      font-size: 0.66rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .floating-badge strong {
+      font-size: 0.95rem;
+      line-height: 1.35;
+    }
+
+    .floating-badge.one {
+      top: 10%;
+      right: -3%;
+    }
+
+    .floating-badge.two {
+      left: -4%;
+      bottom: 20%;
+    }
+
+    .mini-panel {
+      left: 10%;
+      right: 10%;
+      bottom: 7%;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.75rem;
+      z-index: 4;
+    }
+
+    .mini-panel article {
+      padding: 0.9rem;
+      border-radius: 18px;
+      background: rgba(8, 12, 9, 0.68);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       backdrop-filter: blur(10px);
     }
-    .caption-card strong { display: block; font-size: 0.9rem; margin-bottom: 0.35rem; }
-    .caption-card p { color: var(--muted); font-size: 0.82rem; line-height: 1.55; }
-    .chapter {
-      padding: 8rem 1.5rem;
-      border-top: 1px solid var(--line);
+
+    .mini-panel span {
+      display: block;
+      font-size: 0.68rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.35rem;
     }
-    .chapter-inner {
-      max-width: 1100px;
-      margin: 0 auto;
+
+    .mini-panel strong {
+      font-size: 1rem;
+    }
+
+    .quote-card {
+      left: 1.1rem;
+      right: 1.1rem;
+      top: 1.1rem;
+      padding: 1rem 1.1rem;
+      border-radius: 18px;
+      background: rgba(6, 10, 7, 0.54);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #e4e6de;
+      line-height: 1.6;
+      font-size: 0.86rem;
+      z-index: 4;
+      max-width: 76%;
+      backdrop-filter: blur(10px);
+    }
+
+    .section-shell {
+      position: relative;
+      padding: 7rem 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .section-shell::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(149, 255, 107, 0.03), transparent 30%, transparent 70%, rgba(236, 216, 160, 0.025));
+      pointer-events: none;
+    }
+
+    .section-header {
       display: grid;
-      grid-template-columns: 0.9fr 1.1fr;
+      grid-template-columns: 0.88fr 1.12fr;
       gap: 2rem;
-      align-items: start;
+      align-items: end;
+      margin-bottom: 2.4rem;
     }
+
     .chapter-title {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2rem, 4vw, 3.5rem);
-      line-height: 1;
+      font-size: clamp(2.3rem, 4vw, 4rem);
+      line-height: 0.95;
       letter-spacing: -0.04em;
       max-width: 10ch;
     }
-    .chapter-lead { color: var(--muted); line-height: 1.8; max-width: 50ch; margin-top: 0.9rem; }
-    .story-grid { display: grid; gap: 1rem; }
-    .story-card {
-      padding: 1.3rem;
+
+    .chapter-title span {
+      color: var(--gold);
+    }
+
+    .chapter-lead {
+      max-width: 58ch;
+      color: var(--muted);
+      line-height: 1.85;
+    }
+
+    .story-grid {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .story-card,
+    .feature-band,
+    .contact-card,
+    .milestone {
       border: 1px solid var(--line);
-      border-radius: 20px;
-      background: var(--card);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
       box-shadow: var(--shadow);
-      transform: translateY(20px);
+      backdrop-filter: blur(10px);
+    }
+
+    .story-card {
+      position: relative;
+      grid-column: span 4;
+      min-height: 240px;
+      padding: 1.5rem;
+      border-radius: 24px;
+      overflow: hidden;
+      transform: translateY(24px);
       opacity: 0;
-      transition: transform .5s ease, opacity .5s ease, border-color .2s ease;
+      transition: transform 0.45s ease, opacity 0.45s ease, border-color 0.25s ease;
     }
-    .story-card.is-visible { transform: translateY(0); opacity: 1; }
-    .story-card:hover { border-color: rgba(0,255,65,0.4); }
-    .story-card h3 { font-size: 1rem; margin-bottom: 0.45rem; }
-    .story-card p { color: var(--muted); line-height: 1.7; font-size: 0.92rem; }
-    .tag-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.9rem; }
-    .tag {
-      padding: 0.35rem 0.65rem;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.08);
+
+    .story-card.is-visible,
+    .milestone.is-visible {
+      opacity: 1;
+      transform: translate(0, 0);
+    }
+
+    .story-card::before {
+      content: "";
+      position: absolute;
+      inset: auto auto -20% -10%;
+      width: 180px;
+      height: 180px;
+      background: radial-gradient(circle, rgba(149, 255, 107, 0.14), transparent 65%);
+      transition: transform 0.4s ease;
+    }
+
+    .story-card:hover {
+      border-color: rgba(149, 255, 107, 0.35);
+      transform: translateY(-6px);
+    }
+
+    .story-card:hover::before {
+      transform: scale(1.15);
+    }
+
+    .story-card.wide {
+      grid-column: span 8;
+      min-height: 260px;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 1rem;
+      align-items: end;
+    }
+
+    .card-kicker,
+    .milestone .meta,
+    .contact-card small {
       font-size: 0.7rem;
-      color: #d7d7d2;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
     }
+
+    .story-card h3,
+    .milestone h3,
+    .contact-card h3 {
+      margin-top: 0.8rem;
+      margin-bottom: 0.6rem;
+      font-size: 1.15rem;
+      line-height: 1.35;
+    }
+
+    .story-card p,
+    .milestone p,
+    .contact-card p {
+      color: #c7cec7;
+      line-height: 1.75;
+      font-size: 0.94rem;
+    }
+
+    .tag-row {
+      display: flex;
+      gap: 0.55rem;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+    }
+
+    .tag {
+      padding: 0.38rem 0.7rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 0.7rem;
+      color: #e5e6e0;
+    }
+
+    .metric-list {
+      display: grid;
+      gap: 0.8rem;
+      align-content: start;
+    }
+
+    .metric-list article {
+      padding: 0.95rem 1rem;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    .metric-list strong {
+      display: block;
+      font-size: 1rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .feature-band {
+      margin-top: 1rem;
+      padding: 1.3rem 1.4rem;
+      border-radius: 24px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .feature-band article {
+      padding-right: 1rem;
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .feature-band article:last-child {
+      border-right: 0;
+      padding-right: 0;
+    }
+
+    .feature-band strong {
+      display: block;
+      margin-bottom: 0.45rem;
+      font-size: 0.95rem;
+    }
+
     .timeline {
       position: relative;
-      max-width: 1100px;
-      margin: 0 auto;
-      padding-left: 2rem;
+      max-width: 960px;
+      margin-left: auto;
+      padding-left: 2.5rem;
     }
+
     .timeline::before {
-      content: '';
+      content: "";
       position: absolute;
-      left: 0.55rem;
+      left: 0.72rem;
       top: 0;
       bottom: 0;
       width: 2px;
-      background: linear-gradient(to bottom, rgba(0,255,65,0.1), rgba(0,255,65,0.95), rgba(0,255,65,0.1));
+      background: linear-gradient(to bottom, rgba(149, 255, 107, 0.08), rgba(149, 255, 107, 0.95), rgba(236, 216, 160, 0.12));
     }
+
     .milestone {
       position: relative;
-      margin-bottom: 1.25rem;
-      padding: 1.4rem 1.4rem 1.4rem 1.5rem;
-      border-radius: 20px;
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,0.03);
+      margin-bottom: 1.2rem;
+      padding: 1.4rem 1.45rem 1.4rem 1.6rem;
+      border-radius: 22px;
       opacity: 0;
       transform: translateX(28px);
-      transition: opacity .5s ease, transform .5s ease, border-color .2s ease;
+      transition: opacity 0.45s ease, transform 0.45s ease, border-color 0.25s ease;
     }
-    .milestone.is-visible { opacity: 1; transform: translateX(0); }
+
+    .milestone:hover {
+      border-color: rgba(149, 255, 107, 0.35);
+    }
+
     .milestone::before {
-      content: '';
+      content: "";
       position: absolute;
-      left: -2rem;
+      left: -2.15rem;
       top: 1.55rem;
       width: 14px;
       height: 14px;
       border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 0 0 6px rgba(0,255,65,0.12);
+      background: linear-gradient(135deg, #efffcb, var(--accent));
+      box-shadow: 0 0 0 8px rgba(149, 255, 107, 0.12);
     }
-    .milestone .meta { font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; }
-    .milestone h3 { font-size: 1.2rem; margin-bottom: 0.45rem; }
-    .milestone p { color: var(--muted); line-height: 1.7; font-size: 0.92rem; }
-    .footer { padding: 3rem 1.5rem 4rem; text-align: center; color: #7b7b74; border-top: 1px solid var(--line); }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    @media (max-width: 900px) {
-      .scene, .chapter-inner { grid-template-columns: 1fr; }
-      .scene { padding-top: 7rem; }
-      .playground { justify-self: start; width: 100%; }
-      .chapter { padding: 6rem 1.5rem; }
-      .timeline { padding-left: 1.4rem; }
-      .timeline::before { left: 0.35rem; }
-      .milestone::before { left: -1.45rem; }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .contact-card {
+      padding: 1.5rem;
+      border-radius: 24px;
+      min-height: 220px;
+    }
+
+    .contact-card a {
+      color: var(--gold);
+    }
+
+    .footer {
+      padding: 2.5rem 1.5rem 3.5rem;
+      text-align: center;
+      color: #748074;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .reveal-line {
+      display: inline-block;
+      overflow: hidden;
+    }
+
+    .reveal-line > span {
+      display: inline-block;
+      transform: translateY(105%);
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.15);
+      }
+    }
+
+    @media (max-width: 1080px) {
+      .scene-inner,
+      .section-header {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-visual {
+        min-height: 560px;
+      }
+
+      .story-card,
+      .story-card.wide {
+        grid-column: span 12;
+      }
+
+      .story-card.wide {
+        grid-template-columns: 1fr;
+      }
+
+      .contact-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 820px) {
+      .nav {
+        padding: 0.9rem 1rem;
+      }
+
+      .container {
+        width: min(var(--max-width), calc(100% - 1.6rem));
+      }
+
+      .scene {
+        padding-top: 7rem;
+      }
+
+      .hero-strip,
+      .mini-panel,
+      .feature-band,
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .feature-band article {
+        padding-right: 0;
+        border-right: 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        padding-bottom: 1rem;
+      }
+
+      .feature-band article:last-child {
+        padding-bottom: 0;
+        border-bottom: 0;
+      }
+
+      .quote-card {
+        max-width: unset;
+      }
+
+      .floating-badge.one {
+        right: 1rem;
+      }
+
+      .floating-badge.two {
+        left: 1rem;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .nav-links {
+        gap: 0.7rem;
+      }
+
+      .nav-links a {
+        font-size: 0.68rem;
+      }
+
+      .brand span {
+        display: none;
+      }
+
+      .hero-title {
+        font-size: clamp(3rem, 15vw, 4.6rem);
+      }
+
+      .hero-text {
+        font-size: 0.98rem;
+      }
+
+      .button {
+        width: 100%;
+      }
+
+      .hero-visual {
+        min-height: 500px;
+      }
+
+      .visual-shell {
+        border-radius: 28px;
+      }
+
+      .portrait-frame {
+        inset: 16% 10% 26%;
+      }
+
+      .mini-panel {
+        left: 1rem;
+        right: 1rem;
+        bottom: 1rem;
+      }
+
+      .floating-badge {
+        min-width: 142px;
+      }
+
+      .floating-badge.one {
+        top: 14%;
+      }
+
+      .floating-badge.two {
+        bottom: 26%;
+      }
+
+      .timeline {
+        padding-left: 1.6rem;
+      }
+
+      .timeline::before {
+        left: 0.35rem;
+      }
+
+      .milestone::before {
+        left: -1.45rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
     }
   </style>
 </head>
 <body>
   <canvas id="bg-canvas"></canvas>
+  <div class="grid-overlay"></div>
   <div class="grain"></div>
+  <div class="cursor-glow"></div>
 
   <header class="nav">
-    <div class="brand">Khansa Khanam Umar Sultan</div>
+    <a class="brand" href="#top">
+      <strong>Khansa Khanam Umar Sultan</strong>
+      <span>Data Analyst · AI Researcher</span>
+    </a>
     <ul class="nav-links">
       <li><a href="#about">About</a></li>
       <li><a href="#work">Work</a></li>
+      <li><a href="#stack">Stack</a></li>
+      <li><a href="#education">Education</a></li>
       <li><a href="#timeline">Timeline</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
   </header>
 
-  <main>
+  <main id="top">
     <section class="scene">
-      <div class="hero-copy">
-        <p class="eyebrow">Data Analyst · AI Researcher · MS Computer Science</p>
-        <h1 class="hero-title">Khansa Khanam<br><span>Umar Sultan</span></h1>
-        <p class="hero-text">I sit at the intersection of rigorous research and practical data science, building AI pipelines, surfacing insights from messy real-world datasets, and communicating findings that drive decisions.</p>
-        <div class="hero-actions">
-          <a class="button primary" href="#work">View Work</a>
-          <a class="button" href="#timeline">My Journey</a>
+      <div class="container scene-inner">
+        <div class="hero-copy">
+          <p class="eyebrow">AI Research · Data Science · Narrative Analytics</p>
+          <h1 class="hero-title">
+            <span class="reveal-line"><span>Khansa Khanam</span></span><br>
+            <span class="reveal-line"><span>Umar Sultan</span></span>
+          </h1>
+          <p class="hero-text">I work where research rigor meets real-world clarity: shaping AI pipelines, decoding high-noise datasets, and turning complex systems into stories people can act on.</p>
+          <div class="hero-actions">
+            <a class="button primary" href="#work">View Selected Work</a>
+            <a class="button" href="#timeline">Explore My Journey</a>
+          </div>
+          <div class="hero-strip">
+            <article class="stat-chip">
+              <strong>20k+</strong>
+              <span>Posts analyzed</span>
+            </article>
+            <article class="stat-chip">
+              <strong>3 Labs</strong>
+              <span>Research tracks</span>
+            </article>
+            <article class="stat-chip">
+              <strong>2+ Years</strong>
+              <span>BI experience</span>
+            </article>
+          </div>
         </div>
-      </div>
 
-      <div class="playground" style="background: url('bg.png') center/cover; background-size: cover; background-position: center;">
-
-
-
-
-
-        <div class="caption-card">
-          <p>Have you ever had a dream, that you were so sure was real? What if you were unable to wake from that dream? How would you know the difference between the dream world and the real world?</p>
+        <div class="hero-visual">
+          <div class="visual-shell" id="hero-shell">
+            <div class="visual-backdrop"></div>
+            <div class="visual-grid"></div>
+            <div class="quote-card">“What if the real skill is learning how to read noise, uncertainty, and human systems all at once?”</div>
+            <div class="orbit-ring one"></div>
+            <div class="orbit-ring two"></div>
+            <div class="pulse-node one"></div>
+            <div class="pulse-node two"></div>
+            <div class="pulse-node three"></div>
+            <div class="portrait-frame">
+              <img src="bg.png" alt="Portrait and visual backdrop for Khansa Khanam Umar Sultan" />
+            </div>
+            <!-- <div class="floating-badge one">
+              <small>Current Focus</small>
+              <strong>Misinformation, AI &amp; Society, and Biomedical Modeling</strong>
+            </div>
+            <div class="floating-badge two">
+              <small>Built For</small>
+              <strong>Messy data, real questions, usable insight</strong>
+            </div>
+            <div class="mini-panel">
+              <article>
+                <span>Stack</span>
+                <strong>Python · NLP · XGBoost</strong>
+              </article>
+              <article>
+                <span>Method</span>
+                <strong>Experiments + dashboards + narrative synthesis</strong>
+              </article> -->
+              <!-- <article>
+                <span>Lens</span>
+                <strong>Technical depth with social context</strong>
+              </article> -->
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
-    <section id="about" class="chapter">
-      <div class="chapter-inner">
-        <div>
-          <h2 class="chapter-title">Where <span>data</span> meets research</h2>
-          <p class="chapter-lead">Computer Science graduate with an IT background and 2+ years as a Business Intelligence Analyst. Currently an Applied AI Researcher working across three UB labs: misinformation, cancer biophysics, and AI & Society.</p>
+    <section id="about" class="section-shell">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2 class="chapter-title">Where <span>data</span> meets research</h2>
+          </div>
+          <p class="chapter-lead">Computer Science graduate with an IT foundation and business intelligence experience, now working across University at Buffalo labs where AI, society, and scientific modeling overlap. I like building systems that are technically sound and deeply legible.</p>
         </div>
+
         <div class="story-grid">
-          <div class="story-card reveal-card">
-            <h3>Research that matters</h3>
-            <p>My work covers the full data lifecycle, from unstructured Reddit data and cancer simulations to dashboards that inform executive decisions. I focus on research that's actually used.</p>
-            <div class="tag-row"><span class="tag">AI Research</span><span class="tag">NLP</span><span class="tag">Bayesian Optimization</span></div>
-          </div>
-          <div class="story-card reveal-card">
-            <h3>Outside the lab</h3>
-            <p>I write on Medium about AI, society, and how we make sense of them. When I'm offline, I'm usually hiking, wandering through nature, or lost in a good book.</p>
-            <div class="tag-row"><span class="tag">Writing</span><span class="tag">Hiking</span><span class="tag">Reading</span></div>
-          </div>
+          <article class="story-card wide reveal-card">
+            <div>
+              <div class="card-kicker">Research Identity</div>
+              <h3>Full-stack thinking for the full data lifecycle</h3>
+              <p>From unstructured Reddit corpora to cancer cell simulations and executive reporting, I build workflows that move from raw signals to interpretable outcomes. The throughline is always the same: make complexity useful.</p>
+              <div class="tag-row">
+                <span class="tag">AI Research</span>
+                <span class="tag">NLP</span>
+                <span class="tag">Bayesian Optimization</span>
+                <span class="tag">Analytics Storytelling</span>
+              </div>
+            </div>
+            <div class="metric-list">
+              <article>
+                <strong>Applied AI Researcher</strong>
+                <p>Working across misinformation, cancer biophysics, and AI &amp; Society.</p>
+              </article>
+              <article>
+                <strong>Business Intelligence Background</strong>
+                <p>Experience translating analysis into decisions, not just reports.</p>
+              </article>
+            </div>
+          </article>
+
+          <article class="story-card reveal-card">
+            <div class="card-kicker">Outside The Lab</div>
+            <h3>Writing, nature, and ideas that linger</h3>
+            <p>I write on Medium about AI and society, and I reset through hiking, reading, and long stretches of curiosity-driven thinking.</p>
+            <div class="tag-row">
+              <span class="tag">Writing</span>
+              <span class="tag">Hiking</span>
+              <span class="tag">Reading</span>
+            </div>
+          </article>
+
+          <article class="story-card reveal-card">
+            <div class="card-kicker">Working Style</div>
+            <h3>Analytical, visual, and narrative at once</h3>
+            <p>I enjoy the last mile of research: the part where evidence becomes something another human can actually understand and trust.</p>
+            <div class="tag-row">
+              <span class="tag">Communication</span>
+              <span class="tag">Research Ops</span>
+              <span class="tag">Insight Design</span>
+            </div>
+          </article>
+        </div>
+
+        <div class="feature-band reveal-card">
+          <article>
+            <strong>Pattern Recognition</strong>
+            <p>Surfacing structure from noisy, high-variance data.</p>
+          </article>
+          <article>
+            <strong>Modeling &amp; Validation</strong>
+            <p>Grounding AI work in experiments, metrics, and reproducibility.</p>
+          </article>
+          <article>
+            <strong>Human Interpretation</strong>
+            <p>Translating technical results into clearer decisions and stories.</p>
+          </article>
         </div>
       </div>
     </section>
 
-    <section id="work" class="chapter">
-      <div class="chapter-inner">
-        <div>
-          <h2 class="chapter-title">Selected <span>work</span></h2>
-          <p class="chapter-lead">Projects that represent the best of my technical and research work.</p>
+    <section id="work" class="section-shell">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2 class="chapter-title">Selected <span>work</span></h2>
+          </div>
+          <p class="chapter-lead">A few projects that show how I approach difficult questions: through experimentation, modeling, domain context, and clear communication.</p>
         </div>
+
         <div class="story-grid">
-          <div class="story-card reveal-card">
+          <article class="story-card reveal-card">
+            <div class="card-kicker">Computational Oncology</div>
             <h3>Bayesian Optimization for Cancer Cell Migration</h3>
-            <p>Calibrated CompuCell3D simulations across 2 phenotypes and 32 parameter sets × 20 replicates; validated against experimental invasion data, achieving 35% reduction in invalid proposals.</p>
-            <div class="tag-row"><span class="tag">Python</span><span class="tag">Bayesian Optimization</span><span class="tag">CompuCell3D</span></div>
-          </div>
-          <div class="story-card reveal-card">
-            <h3>AI4MH - AI Perception for Mental Health</h3>
-            <p>Fine-tuned RoBERTa on 800 labeled posts achieving 87% accuracy across 4 sentiment dimensions; scaled to 20,000+ posts via BERTopic for AI governance research.</p>
-            <div class="tag-row"><span class="tag">RoBERTa</span><span class="tag">BERTopic</span><span class="tag">NLP</span></div>
-          </div>
-          <div class="story-card reveal-card">
-            <h3>Physiological Age Analysis</h3>
-            <p>Built XGBoost + Random Survival Forest models on NHANES dataset (n=22,307) using 20+ biomarkers; achieved C-index of 0.74 linking biological aging to Phase 1 enzyme activity.</p>
-            <div class="tag-row"><span class="tag">XGBoost</span><span class="tag">SHAP</span><span class="tag">Survival Analysis</span></div>
-          </div>
+            <p>Calibrated CompuCell3D simulations across two phenotypes and 32 parameter sets with repeated trials, cutting invalid proposals by 35% while matching experimental invasion behavior more reliably.</p>
+            <div class="tag-row">
+              <span class="tag">Python</span>
+              <span class="tag">Bayesian Optimization</span>
+              <span class="tag">CompuCell3D</span>
+            </div>
+          </article>
+
+          <article class="story-card reveal-card">
+            <div class="card-kicker">Mental Health + NLP</div>
+            <h3>AI4MH Sentiment and Topic Discovery</h3>
+            <p>Fine-tuned RoBERTa on labeled mental-health discussions to reach 87% accuracy across four sentiment dimensions, then extended the analysis to 20,000+ posts with BERTopic for governance-oriented interpretation.</p>
+            <div class="tag-row">
+              <span class="tag">RoBERTa</span>
+              <span class="tag">BERTopic</span>
+              <span class="tag">Reddit Data</span>
+            </div>
+          </article>
+
+          <article class="story-card reveal-card">
+            <div class="card-kicker">Population Health</div>
+            <h3>Physiological Age and Survival Analysis</h3>
+            <p>Built XGBoost and Random Survival Forest models on NHANES data using 20+ biomarkers, reaching a C-index of 0.74 to connect biological aging patterns with Phase 1 enzyme activity.</p>
+            <div class="tag-row">
+              <span class="tag">XGBoost</span>
+              <span class="tag">SHAP</span>
+              <span class="tag">Survival Analysis</span>
+            </div>
+          </article>
         </div>
       </div>
     </section>
 
-    <section id="timeline" class="chapter">
-      <div class="chapter-inner">
-        <div>
-          <h2 class="chapter-title">My <span>journey</span></h2>
-          <p class="chapter-lead">A timeline of the work and research that shaped my path.</p>
+    <section id="stack" class="section-shell">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2 class="chapter-title">My <span>tech stack</span></h2>
+          </div>
+          <p class="chapter-lead">The tools I use most often across analytics, data engineering, machine learning, and research strategy work.</p>
         </div>
+
+        <div class="story-grid">
+          <article class="story-card reveal-card">
+            <div class="card-kicker">Data Analysis</div>
+            <h3>Analysis and visualization</h3>
+            <p>SQL with joins, window functions, and CTEs; Python with Pandas, NumPy, Matplotlib, and SciPy; plus R, Excel, Power BI, Tableau, Google Analytics, and Google Sheets.</p>
+            <div class="tag-row">
+              <span class="tag">SQL</span>
+              <span class="tag">Python</span>
+              <span class="tag">Power BI</span>
+              <span class="tag">Tableau</span>
+            </div>
+          </article>
+
+          <article class="story-card reveal-card">
+            <div class="card-kicker">Data Engineering</div>
+            <h3>Databases and pipeline design</h3>
+            <p>PostgreSQL, MySQL, NoSQL, BigQuery, dbt, Apache Spark, data pipeline design, data cleaning, and reliable data management across messy source systems.</p>
+            <div class="tag-row">
+              <span class="tag">PostgreSQL</span>
+              <span class="tag">BigQuery</span>
+              <span class="tag">dbt</span>
+              <span class="tag">Spark</span>
+            </div>
+          </article>
+
+          <article class="story-card reveal-card">
+            <div class="card-kicker">Cloud</div>
+            <h3>Platforms and integrations</h3>
+            <p>AWS, GCP, REST API integration, and presentation workflows that help move analysis from technical execution into collaborative decision-making.</p>
+            <div class="tag-row">
+              <span class="tag">AWS</span>
+              <span class="tag">GCP</span>
+              <span class="tag">REST APIs</span>
+              <span class="tag">PowerPoint</span>
+            </div>
+          </article>
+
+          <article class="story-card reveal-card">
+            <div class="card-kicker">Machine Learning</div>
+            <h3>Modeling, explainability, and NLP</h3>
+            <p>Scikit-learn, XGBoost, SHAP, PyTorch, TensorFlow, Hugging Face, NLP workflows, and optimization techniques for applied machine learning research.</p>
+            <div class="tag-row">
+              <span class="tag">Scikit-learn</span>
+              <span class="tag">PyTorch</span>
+              <span class="tag">TensorFlow</span>
+              <span class="tag">Hugging Face</span>
+            </div>
+          </article>
+
+          <article class="story-card wide reveal-card">
+            <div>
+              <div class="card-kicker">Business Strategy</div>
+              <h3>Technical work shaped by business context</h3>
+              <p>Market research across quantitative and qualitative methods, forecasting, competitive intelligence, go-to-market planning, and stakeholder management all shape how I scope and communicate technical work.</p>
+              <div class="tag-row">
+                <span class="tag">Forecasting</span>
+                <span class="tag">Market Research</span>
+                <span class="tag">Go-to-Market</span>
+                <span class="tag">Stakeholder Management</span>
+              </div>
+            </div>
+            <div class="metric-list">
+              <article>
+                <strong>Technical + Strategic</strong>
+                <p>I like connecting models, pipelines, and dashboards to the business questions they need to answer.</p>
+              </article>
+              <article>
+                <strong>Research to Action</strong>
+                <p>The goal is not just insight generation, but helping teams make better decisions with it.</p>
+              </article>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="education" class="section-shell">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2 class="chapter-title">My <span>education</span></h2>
+          </div>
+          <p class="chapter-lead">Training across computer science and information technology gave me both engineering discipline and an instinct for making systems practical.</p>
+        </div>
+
+        <div class="story-grid">
+          <article class="story-card reveal-card">
+            <div class="card-kicker">2024-2025</div>
+            <h3>SUNY University at Buffalo</h3>
+            <p>MS in Computer Science, with work spanning machine learning, applied AI research, and data-intensive experimentation.</p>
+          </article>
+
+          <article class="story-card reveal-card">
+            <div class="card-kicker">2017-2021</div>
+            <h3>Anna University</h3>
+            <p>B.Tech in Information Technology, building the technical base that later expanded into analytics, BI, and AI research.</p>
+          </article>
+
+          <!-- <article class="story-card reveal-card">
+            <div class="card-kicker">Throughline</div>
+            <h3>Technical depth paired with context</h3>
+            <p>The most valuable part of my training has been learning how to move across domains without losing rigor or clarity.</p>
+          </article> -->
+        </div>
+      </div>
+    </section>
+
+    <section id="timeline" class="section-shell">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2 class="chapter-title">My <span>journey</span></h2>
+          </div>
+          <p class="chapter-lead">A timeline of research, analytics, and technical growth that shaped how I work today.</p>
+        </div>
+
         <div class="timeline">
-          <div class="milestone reveal-milestone">
+          <article class="milestone reveal-milestone">
             <div class="meta">2026 · Present</div>
             <h3>Applied AI Researcher</h3>
-            <p>University at Buffalo, Dept. of AI & Society — Building reproducible data workflows and research artifacts across AI bias and misinformation studies.</p>
-          </div>
-          <div class="milestone reveal-milestone">
+            <p>University at Buffalo, Department of AI &amp; Society. Building reproducible data workflows, analysis artifacts, and research support systems around bias, misinformation, and responsible AI questions.</p>
+          </article>
+
+          <article class="milestone reveal-milestone">
             <div class="meta">2025 · Present</div>
             <h3>ML / NLP Research</h3>
-            <p>UB Media Effects Lab — Analyzed 20,000 Reddit posts, fine-tuned RoBERTa, and used BERTopic to surface narratives for AI governance.</p>
-          </div>
-          <div class="milestone reveal-milestone">
+            <p>UB Media Effects Lab. Analyzed 20,000 Reddit posts, fine-tuned RoBERTa models, and surfaced narrative structures with BERTopic for AI governance work.</p>
+          </article>
+
+          <article class="milestone reveal-milestone">
             <div class="meta">2025 · Present</div>
             <h3>Biomedical Data Science</h3>
-            <p>UB Systems Biomedicine Lab — Calibrated cancer migration simulations and optimized biological models with Bayesian methods.</p>
-          </div>
-          <div class="milestone reveal-milestone">
+            <p>UB Systems Biomedicine Lab. Calibrated cancer migration simulations and improved biological model search with Bayesian methods and repeated validation.</p>
+          </article>
+
+          <article class="milestone reveal-milestone">
             <div class="meta">2021 · 2023</div>
             <h3>Business Intelligence Analyst</h3>
-            <p>SafetyConnect IOTRL — Built forecasting dashboards and strategic analysis supporting a $1.2M Seed A raise.</p>
-          </div>
+            <p>SafetyConnect IOTRL. Built forecasting dashboards and strategic analyses that supported business planning during a $1.2M Seed A raise.</p>
+          </article>
         </div>
       </div>
     </section>
 
-    <section id="contact" class="chapter">
-      <div class="chapter-inner">
-        <div>
-          <h2 class="chapter-title">Let's <span>connect</span></h2>
-          <p class="chapter-lead">Open to research collaborations, data science roles, and conversations about AI, NLP, and responsible technology.</p>
+    <section id="contact" class="section-shell">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <h2 class="chapter-title">Let's <span>connect</span></h2>
+          </div>
+          <p class="chapter-lead">Open to research collaborations, data science roles, and thoughtful conversations around AI, NLP, social impact, and responsible technology.</p>
         </div>
-        <div class="story-grid">
-          <div class="story-card reveal-card">
-            <h3>khansakh@protonmail.com</h3>
-            <p>Best way to reach me for research or opportunities.</p>
-          </div>
-          <div class="story-card reveal-card">
-            <h3>LinkedIn / GitHub / Medium</h3>
-            <p>Active on all platforms. Follow along with my latest work.</p>
-          </div>
+
+        <div class="contact-grid">
+          <article class="contact-card reveal-card">
+            <small>Email</small>
+            <h3><a href="mailto:khansakh@protonmail.com">khansakh@protonmail.com</a></h3>
+            <p>The best place to reach me for collaboration, research, or opportunity-driven conversations.</p>
+          </article>
+
+          <article class="contact-card reveal-card">
+            <small>Platforms</small>
+            <h3>LinkedIn · GitHub · Medium</h3>
+            <p>I share technical work, essays, and ongoing ideas across platforms and long-form writing.</p>
+          </article>
+
+          <!-- <article class="contact-card reveal-card">
+            <small>What I Enjoy Building</small>
+            <h3>Research systems with clarity</h3>
+            <p>Projects that sit between experimentation, communication, and thoughtful AI application are usually where I do my best work.</p>
+          </article> -->
         </div>
       </div>
     </section>
   </main>
 
-  <div class="footer">&copy; 2026 Khansa Khanam Umar Sultan</div>
+  <footer class="footer">&copy; 2026 Khansa Khanam Umar Sultan</footer>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script>
     window.addEventListener('DOMContentLoaded', () => {
-      if (window.gsap && window.ScrollTrigger) {
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const cursorGlow = document.querySelector('.cursor-glow');
+      const heroShell = document.getElementById('hero-shell');
+
+      if (!prefersReducedMotion) {
+        document.addEventListener('pointermove', (event) => {
+          document.documentElement.style.setProperty('--cursor-x', event.clientX + 'px');
+          document.documentElement.style.setProperty('--cursor-y', event.clientY + 'px');
+        });
+      } else if (cursorGlow) {
+        cursorGlow.style.opacity = '0';
+      }
+
+      if (heroShell && !prefersReducedMotion) {
+        heroShell.addEventListener('pointermove', (event) => {
+          const bounds = heroShell.getBoundingClientRect();
+          const x = (event.clientX - bounds.left) / bounds.width - 0.5;
+          const y = (event.clientY - bounds.top) / bounds.height - 0.5;
+          heroShell.style.transform = 'rotateX(' + (-y * 9) + 'deg) rotateY(' + (x * 11) + 'deg) translateY(' + (-Math.abs(y) * 6) + 'px)';
+        });
+
+        heroShell.addEventListener('pointerleave', () => {
+          heroShell.style.transform = 'rotateX(0deg) rotateY(0deg) translateY(0px)';
+        });
+      }
+
+      if (window.gsap && window.ScrollTrigger && !prefersReducedMotion) {
         gsap.registerPlugin(ScrollTrigger);
-        gsap.utils.toArray('.reveal-card, .reveal-milestone').forEach((el) => {
-          gsap.fromTo(el, { opacity: 0, y: 40 }, {
+
+        gsap.to('.reveal-line > span', {
+          y: 0,
+          duration: 1.1,
+          ease: 'power3.out',
+          stagger: 0.1,
+          delay: 0.15
+        });
+
+        gsap.from('.hero-text, .hero-actions, .hero-strip', {
+          opacity: 0,
+          y: 26,
+          duration: 1,
+          stagger: 0.12,
+          ease: 'power2.out',
+          delay: 0.35
+        });
+
+        gsap.from('.floating-badge, .quote-card, .mini-panel article', {
+          opacity: 0,
+          y: 22,
+          duration: 0.9,
+          stagger: 0.1,
+          ease: 'power2.out',
+          delay: 0.5
+        });
+
+        gsap.utils.toArray('.reveal-card').forEach((card, index) => {
+          gsap.to(card, {
             opacity: 1,
             y: 0,
-            duration: 0.9,
+            duration: 0.85,
             ease: 'power2.out',
-            scrollTrigger: { trigger: el, start: 'top 82%' }
+            delay: index % 3 * 0.04,
+            scrollTrigger: {
+              trigger: card,
+              start: 'top 84%'
+            }
           });
+        });
+
+        gsap.utils.toArray('.reveal-milestone').forEach((item) => {
+          gsap.to(item, {
+            opacity: 1,
+            x: 0,
+            duration: 0.8,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: item,
+              start: 'top 86%'
+            }
+          });
+        });
+
+        gsap.utils.toArray('.section-shell').forEach((section) => {
+          gsap.fromTo(section, { backgroundPosition: '50% 0%' }, {
+            backgroundPosition: '50% 100%',
+            ease: 'none',
+            scrollTrigger: {
+              trigger: section,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: true
+            }
+          });
+        });
+      } else {
+        document.querySelectorAll('.reveal-card, .reveal-milestone').forEach((el) => {
+          el.classList.add('is-visible');
+          el.style.opacity = '1';
+          el.style.transform = 'translate(0, 0)';
+        });
+        document.querySelectorAll('.reveal-line > span').forEach((el) => {
+          el.style.transform = 'translateY(0)';
         });
       }
 
       const canvas = document.getElementById('bg-canvas');
-      if (canvas && window.THREE) {
+      if (canvas && window.THREE && !prefersReducedMotion) {
         const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(60, innerWidth / innerHeight, 0.1, 1000);
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
         camera.position.z = 10;
+
         const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-        renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
-        renderer.setSize(innerWidth, innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setSize(window.innerWidth, window.innerHeight);
 
-        const geo = new THREE.BufferGeometry();
-        const count = 1200;
+        const pointsGeometry = new THREE.BufferGeometry();
+        const count = 1600;
         const positions = new Float32Array(count * 3);
-        for (let i = 0; i < count * 3; i++) positions[i] = (Math.random() - 0.5) * 45;
-        geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        const scales = new Float32Array(count);
 
-        const mat = new THREE.PointsMaterial({ color: 0x00ff41, size: 0.045, transparent: true, opacity: 0.55 });
-        const points = new THREE.Points(geo, mat);
-        scene.add(points);
+        for (let i = 0; i < count; i++) {
+          const i3 = i * 3;
+          positions[i3] = (Math.random() - 0.5) * 46;
+          positions[i3 + 1] = (Math.random() - 0.5) * 34;
+          positions[i3 + 2] = (Math.random() - 0.5) * 24;
+          scales[i] = Math.random();
+        }
+
+        pointsGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        pointsGeometry.setAttribute('scale', new THREE.BufferAttribute(scales, 1));
+
+        const material = new THREE.PointsMaterial({
+          color: 0x95ff6b,
+          size: 0.05,
+          transparent: true,
+          opacity: 0.55
+        });
+
+        const field = new THREE.Points(pointsGeometry, material);
+        const fieldTwo = new THREE.Points(pointsGeometry.clone(), new THREE.PointsMaterial({
+          color: 0xecd8a0,
+          size: 0.028,
+          transparent: true,
+          opacity: 0.18
+        }));
+
+        fieldTwo.rotation.z = 0.8;
+        fieldTwo.position.z = -3;
+
+        scene.add(field);
+        scene.add(fieldTwo);
+
+        let pointerX = 0;
+        let pointerY = 0;
+
+        document.addEventListener('pointermove', (event) => {
+          pointerX = (event.clientX / window.innerWidth) * 2 - 1;
+          pointerY = -(event.clientY / window.innerHeight) * 2 + 1;
+        });
 
         const animate = () => {
-          points.rotation.y += 0.0008;
-          points.rotation.x += 0.00025;
+          field.rotation.y += 0.00075;
+          field.rotation.x += 0.00018;
+          fieldTwo.rotation.y -= 0.00035;
+
+          field.rotation.y += pointerX * 0.0009;
+          field.rotation.x += pointerY * 0.00045;
+
           renderer.render(scene, camera);
-          requestAnimationFrame(animate);
+          window.requestAnimationFrame(animate);
         };
+
         animate();
 
-        addEventListener('resize', () => {
-          camera.aspect = innerWidth / innerHeight;
+        window.addEventListener('resize', () => {
+          camera.aspect = window.innerWidth / window.innerHeight;
           camera.updateProjectionMatrix();
-          renderer.setSize(innerWidth, innerHeight);
+          renderer.setSize(window.innerWidth, window.innerHeight);
         });
       }
     });
   </script>
-
-<script>
-  const playground = document.querySelector('.playground');
-  if (playground) {
-    playground.addEventListener('mousemove', (e) => {
-      const rect = playground.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width;
-      const y = (e.clientY - rect.top) / rect.height;
-      playground.style.backgroundPosition = \`calc(50% + \${(x - 0.5) * 40}px) calc(50% + \${(y - 0.5) * 40}px)\`;
-    });
-    playground.addEventListener('mouseleave', () => {
-      playground.style.backgroundPosition = 'center center';
-    });
-  }
-</script>
-
 </body>
 </html>
