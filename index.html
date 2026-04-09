@@ -290,12 +290,12 @@
         </div>
       </div>
 
-      <div class="playground">
-        <div class="orbit"></div>
-        <div class="orbit two"></div>
-        <div class="blob one"></div>
-        <div class="blob two"></div>
-        <div class="character"></div>
+      <div class="playground" style="background: url('bg.png') center/cover; background-size: cover; background-position: center;">
+
+
+
+
+
         <div class="caption-card">
           <strong>Your research world</strong>
           <p>This can become a lab, notebook, or data visualization that reflects your work.</p>
@@ -456,5 +456,21 @@
       }
     });
   </script>
+
+<script>
+  const playground = document.querySelector('.playground');
+  if (playground) {
+    playground.addEventListener('mousemove', (e) => {
+      const rect = playground.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width;
+      const y = (e.clientY - rect.top) / rect.height;
+      playground.style.backgroundPosition = \`calc(50% + \${(x - 0.5) * 40}px) calc(50% + \${(y - 0.5) * 40}px)\`;
+    });
+    playground.addEventListener('mouseleave', () => {
+      playground.style.backgroundPosition = 'center center';
+    });
+  }
+</script>
+
 </body>
 </html>
