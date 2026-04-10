@@ -258,6 +258,35 @@
       color: var(--gold);
     }
 
+    .hero-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem;
+      margin-top: 1.15rem;
+    }
+
+    .hero-link {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.42rem 0.72rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--muted);
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      transition: transform 0.2s ease, border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+    }
+
+    .hero-link:hover,
+    .hero-link:focus-visible {
+      transform: translateY(-2px);
+      border-color: rgba(149, 255, 107, 0.4);
+      color: var(--text);
+      background: rgba(149, 255, 107, 0.08);
+    }
+
     .hero-text {
       margin-top: 1.35rem;
       max-width: 58ch;
@@ -692,6 +721,24 @@
       font-size: 0.94rem;
     }
 
+    .story-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      margin-top: 0.95rem;
+      font-size: 0.74rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold);
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    .story-link:hover,
+    .story-link:focus-visible {
+      transform: translateX(2px);
+      color: var(--accent);
+    }
+
     .tag-row {
       display: flex;
       gap: 0.55rem;
@@ -700,12 +747,23 @@
     }
 
     .tag {
+      display: inline-flex;
+      align-items: center;
       padding: 0.38rem 0.7rem;
       border-radius: 999px;
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.08);
       font-size: 0.7rem;
       color: #e5e6e0;
+      transition: transform 0.2s ease, border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+    }
+
+    a.tag:hover,
+    a.tag:focus-visible {
+      transform: translateY(-2px);
+      border-color: rgba(149, 255, 107, 0.4);
+      color: var(--text);
+      background: rgba(149, 255, 107, 0.08);
     }
 
     .metric-list {
@@ -1022,6 +1080,12 @@
             <span class="reveal-line"><span>Khansa Khanam</span></span><br>
             <span class="reveal-line"><span>Umar Sultan</span></span>
           </h1>
+          <div class="hero-links">
+            <a class="hero-link" href="mailto:khansakh@protonmail.com">Email</a>
+            <a class="hero-link" href="https://www.linkedin.com/in/khansakhanam/" target="_blank" rel="noreferrer">LinkedIn</a>
+            <a class="hero-link" href="https://github.com/KhansaKhanam?tab=repositories" target="_blank" rel="noreferrer">GitHub</a>
+            <a class="hero-link" href="https://khnsakhnm.medium.com" target="_blank" rel="noreferrer">Medium</a>
+          </div>
           <p class="hero-text">I work where research rigor meets real-world clarity: shaping AI pipelines, decoding high-noise datasets, and turning complex systems into stories people can act on.</p>
           <div class="hero-actions">
             <a class="button primary" href="#work">View Selected Work</a>
@@ -1122,8 +1186,8 @@
             <h3>Writing, nature, and ideas that linger</h3>
             <p>I write on Medium about AI and society, and I reset through hiking, reading, and long stretches of curiosity-driven thinking.</p>
             <div class="tag-row">
-              <span class="tag">Writing</span>
-              <span class="tag">Hiking</span>
+              <a class="tag" href="https://khnsakhnm.medium.com" target="_blank" rel="noreferrer">Writing</a>
+              <a class="tag" href="life.html">Hiking</a>
               <span class="tag">Reading</span>
             </div>
           </article>
@@ -1171,6 +1235,7 @@
             <div class="card-kicker">Computational Oncology</div>
             <h3>Bayesian Optimization for Cancer Cell Migration</h3>
             <p>Calibrated CompuCell3D simulations across two phenotypes and 32 parameter sets with repeated trials, cutting invalid proposals by 35% while matching experimental invasion behavior more reliably.</p>
+            <a class="story-link" href="https://drive.google.com/file/d/1KB6Ff-nspYFFUIjKU_NHGdC-lj87zmsW/view" target="_blank" rel="noreferrer">View project</a>
             <div class="tag-row">
               <span class="tag">Python</span>
               <span class="tag">Bayesian Optimization</span>
@@ -1182,6 +1247,7 @@
             <div class="card-kicker">Mental Health + NLP</div>
             <h3>AI4MH Sentiment and Topic Discovery</h3>
             <p>Fine-tuned RoBERTa on labeled mental-health discussions to reach 87% accuracy across four sentiment dimensions, then extended the analysis to 20,000+ posts with BERTopic for governance-oriented interpretation.</p>
+            <a class="story-link" href="https://github.com/KhansaKhanam/AI4MentalHealth/tree/main/AI4MH-Reddit" target="_blank" rel="noreferrer">View project</a>
             <div class="tag-row">
               <span class="tag">RoBERTa</span>
               <span class="tag">BERTopic</span>
@@ -1193,6 +1259,7 @@
             <div class="card-kicker">Population Health</div>
             <h3>Physiological Age and Survival Analysis</h3>
             <p>Built XGBoost and Random Survival Forest models on NHANES data using 20+ biomarkers, reaching a C-index of 0.74 to connect biological aging patterns with Phase 1 enzyme activity.</p>
+            <a class="story-link" href="https://github.com/KhansaKhanam/PhysiologicalAgeAnalysis" target="_blank" rel="noreferrer">View project</a>
             <div class="tag-row">
               <span class="tag">XGBoost</span>
               <span class="tag">SHAP</span>
@@ -1374,7 +1441,7 @@
 
           <article class="contact-card reveal-card">
             <small>Platforms</small>
-            <h3>LinkedIn · GitHub · Medium</h3>
+            <h3><a href="https://www.linkedin.com/in/khansakhanam/" target="_blank" rel="noreferrer">LinkedIn</a> · <a href="https://github.com/KhansaKhanam?tab=repositories" target="_blank" rel="noreferrer">GitHub</a> · <a href="https://khnsakhnm.medium.com" target="_blank" rel="noreferrer">Medium</a></h3>
             <p>I share technical work, essays, and ongoing ideas across platforms and long-form writing.</p>
           </article>
 
